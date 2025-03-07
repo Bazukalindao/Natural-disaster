@@ -1,110 +1,61 @@
 local ScreenGui = Instance.new("ScreenGui")
-local MainFrame = Instance.new("Frame")
+local BanFrame = Instance.new("Frame")
 local UICorner = Instance.new("UICorner")
 local TitleLabel = Instance.new("TextLabel")
-local PowerBox = Instance.new("TextBox")
-local JumpPowerButton = Instance.new("TextButton")
-local WalkSpeedButton = Instance.new("TextButton")
-local PlayerNameBox = Instance.new("TextBox")
-local TeleportButton = Instance.new("TextButton")
+local ReasonLabel = Instance.new("TextLabel")
+local AppealButton = Instance.new("TextButton")
 
 ScreenGui.Parent = game.CoreGui
-MainFrame.Parent = ScreenGui
-MainFrame.Size = UDim2.new(0, 350, 0, 400)
-MainFrame.Position = UDim2.new(0.5, -175, 0.5, -200)
-MainFrame.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-MainFrame.BackgroundTransparency = 0.2
 
-UICorner.Parent = MainFrame
+BanFrame.Parent = ScreenGui
+BanFrame.Size = UDim2.new(0, 400, 0, 250)
+BanFrame.Position = UDim2.new(0.5, -200, 0.5, -125)
+BanFrame.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
+BanFrame.BackgroundTransparency = 0.1
+
+UICorner.Parent = BanFrame
 UICorner.CornerRadius = UDim.new(0, 15)
 
-TitleLabel.Parent = MainFrame
-TitleLabel.Size = UDim2.new(1, -20, 0, 40)
+TitleLabel.Parent = BanFrame
+TitleLabel.Size = UDim2.new(1, -20, 0, 50)
 TitleLabel.Position = UDim2.new(0, 10, 0, 10)
 TitleLabel.BackgroundTransparency = 1
-TitleLabel.Text = "Bazuka Hub | Natural Disaster"
+TitleLabel.Text = "Você foi banido permanente,  mensagem da equipe: você é muito burro, temos anti-exploit"
 TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.TextSize = 18
+TitleLabel.TextSize = 22
 TitleLabel.Font = Enum.Font.GothamBold
-TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+TitleLabel.TextXAlignment = Enum.TextXAlignment.Center
 
-PowerBox.Parent = MainFrame
-PowerBox.Size = UDim2.new(1, -20, 0, 40)
-PowerBox.Position = UDim2.new(0, 10, 0, 60)
-PowerBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-PowerBox.PlaceholderText = "Digite um valor (ex: 50)"
-PowerBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-PowerBox.TextSize = 16
+ReasonLabel.Parent = BanFrame
+ReasonLabel.Size = UDim2.new(1, -20, 0, 80)
+ReasonLabel.Position = UDim2.new(0, 10, 0, 60)
+ReasonLabel.BackgroundTransparency = 1
+ReasonLabel.Text = "Motivo: Exploitação de sistema\nDuração: Permanente\nID de Ban: #"..math.random(100000, 999999)
+ReasonLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+ReasonLabel.TextSize = 18
+ReasonLabel.Font = Enum.Font.Gotham
+ReasonLabel.TextXAlignment = Enum.TextXAlignment.Center
+ReasonLabel.TextYAlignment = Enum.TextYAlignment.Top
 
-JumpPowerButton.Parent = MainFrame
-JumpPowerButton.Size = UDim2.new(1, -20, 0, 40)
-JumpPowerButton.Position = UDim2.new(0, 10, 0, 110)
-JumpPowerButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-JumpPowerButton.Text = "Set Jump Power"
-JumpPowerButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-JumpPowerButton.TextSize = 16
+AppealButton.Parent = BanFrame
+AppealButton.Size = UDim2.new(1, -40, 0, 40)
+AppealButton.Position = UDim2.new(0, 20, 0, 160)
+AppealButton.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
+AppealButton.Text = "Apelar Banimento"
+AppealButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+AppealButton.TextSize = 18
+AppealButton.Font = Enum.Font.GothamBold
 
-WalkSpeedButton.Parent = MainFrame
-WalkSpeedButton.Size = UDim2.new(1, -20, 0, 40)
-WalkSpeedButton.Position = UDim2.new(0, 10, 0, 160)
-WalkSpeedButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-WalkSpeedButton.Text = "Set Walk Speed"
-WalkSpeedButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-WalkSpeedButton.TextSize = 16
+local UICornerButton = Instance.new("UICorner")
+UICornerButton.Parent = AppealButton
+UICornerButton.CornerRadius = UDim.new(0, 10)
 
-PlayerNameBox.Parent = MainFrame
-PlayerNameBox.Size = UDim2.new(1, -20, 0, 40)
-PlayerNameBox.Position = UDim2.new(0, 10, 0, 210)
-PlayerNameBox.BackgroundColor3 = Color3.fromRGB(60, 60, 60)
-PlayerNameBox.PlaceholderText = "Digite o nome do jogador"
-PlayerNameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
-PlayerNameBox.TextSize = 16
-
-TeleportButton.Parent = MainFrame
-TeleportButton.Size = UDim2.new(1, -20, 0, 40)
-TeleportButton.Position = UDim2.new(0, 10, 0, 260)
-TeleportButton.BackgroundColor3 = Color3.fromRGB(70, 70, 70)
-TeleportButton.Text = "Teleport to Player"
-TeleportButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-TeleportButton.TextSize = 16
-
-local function checkAdmins()
-    for _, player in pairs(game.Players:GetPlayers()) do
-        if player:GetRankInGroup(123456) >= 200 then
-            return true
-        end
-    end
-    return false
-end
-
-JumpPowerButton.MouseButton1Click:Connect(function()
-    if checkAdmins() then return end
-    local value = tonumber(PowerBox.Text)
-    if value and value > 0 then
-        local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.UseJumpPower = true
-            humanoid.JumpPower = value
-        end
-    end
+AppealButton.MouseButton1Click:Connect(function()
+    ReasonLabel.Text = "Seu apelo foi rejeitado."
+    AppealButton.Text = "Indo para a tela inicial..."
+    task.wait(3)
+    BanFrame.Visible = false
 end)
 
-WalkSpeedButton.MouseButton1Click:Connect(function()
-    if checkAdmins() then return end
-    local value = tonumber(PowerBox.Text)
-    if value and value > 0 then
-        local humanoid = game.Players.LocalPlayer.Character:FindFirstChildOfClass("Humanoid")
-        if humanoid then
-            humanoid.WalkSpeed = value
-        end
-    end
-end)
-
-TeleportButton.MouseButton1Click:Connect(function()
-    if checkAdmins() then return end
-    local targetName = PlayerNameBox.Text
-    local targetPlayer = game.Players:FindFirstChild(targetName)
-    if targetPlayer and targetPlayer.Character and targetPlayer.Character:FindFirstChild("HumanoidRootPart") then
-        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = targetPlayer.Character.HumanoidRootPart.CFrame
-    end
-end)
+task.wait(10)
+BanFrame.Visible = false
